@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Para Tami 🤍</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Caveat:wght@600&display=swap');
+
+  body {
+    margin: 0;
+    padding: 0;
+    background-color: #fdfbf7;
+    color: #333;
+    font-family: 'Dancing Script', cursive; 
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    overflow: hidden;
+    text-align: center;
+    position: relative;
+  }
+
+  /* Textura de papel */
+  body::before {
+    content: "";
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background-image: url('https://www.transparenttextures.com/patterns/cream-paper.png');
+    opacity: 0.6;
+    z-index: -1;
+  }
+
+  #container {
+    width: 90%;
+    max-width: 600px;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10; /* Encima de la lluvia */
+  }
+
+  .slide {
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    animation: fadeScale 1.5s ease-out;
+    width: 100%;
+  }
+
+  .slide.active { display: flex; }
+
+  h1 {
+    font-family: 'Dancing Script', cursive;
+    font-size: 3.8rem;
+    color: #d60000;
+    margin: 0;
+    line-height: 1.2;
+    text-shadow: 2px 2px 4px rgba(214, 0, 0, 0.1);
+    transform: rotate(-2deg);
+  }
+
+  .heart-icon {
+    font-size: 3rem;
+    color: #d60000;
+    display: inline-block;
+    animation: beat 1.5s infinite;
+  }
+
+  p {
+    font-family: 'Caveat', cursive;
+    font-size: 1.8rem;
+    color: #555;
+    margin-top: 20px;
+    max-width: 85%;
+    opacity: 0;
+    animation: fadeInUp 1s ease 0.8s forwards;
+  }
+
+  /* Lista final */
+  .list-container {
+    text-align: left;
+    max-height: 55vh;
+    overflow-y: auto;
+    padding: 20px;
+    background: rgba(255,255,255,0.6);
+    border-radius: 15px;
+    border: 2px dashed #d60000;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+  }
+  
+  .list-item {
+    font-family: 'Caveat', cursive;
+    font-size: 1.5rem;
+    color: #a30000;
+    margin-bottom: 12px;
+    display: block;
+    border-bottom: 1px solid rgba(163, 0, 0, 0.1);
+    padding-bottom: 5px;
+  }
+
+  #click-area {
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 100%;
+    z-index: 20;
+    cursor: pointer;
+  }
+  
+  .hint {
+    position: absolute;
+    bottom: 30px;
+    font-family: sans-serif;
+    font-size: 0.9rem;
+    color: #aaa;
+    animation: pulse 2s infinite;
+    z-index: 25;
+  }
+
+  /* Botón Música */
+  #music-btn {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: rgba(214, 0, 0, 0.1);
+    border: 1px solid #d60000;
+    color: #d60000;
+    padding: 10px;
+    border-radius: 50%;
+    cursor: pointer;
+    z-index: 100;
+    font-size: 1.2rem;
+  }
+
+  /* Lluvia */
+  .rain-container {
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 100%;
+    pointer-events: none;
+    overflow: hidden;
+    z-index: 1;
+  }
+  .falling-item {
+    position: absolute;
+    top: -50px;
+    font-size: 20px;
+    animation: fall linear infinite;
+    opacity: 0.7;
+  }
+
+  @keyframes fall {
+    to { transform: translateY(110vh) rotate(360deg); }
+  }
+  @keyframes fadeScale {
+    from { opacity: 0; transform: scale(0.95); }
+    to { opacity: 1; transform: scale(1); }
+  }
+  @keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes beat {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.15); }
+  }
+  @keyframes pulse { 0%, 100% { opacity: 0.6; } 50% { opacity: 1; } }
+
+</style>
+</head>
+<body>
+
+<!-- Música (REEMPLAZA 'cancion.mp3' POR TU ARCHIVO) -->
+<audio id="bgMusic" loop>
+  <source src="cancion.mp3" type="audio/mpeg">
+</audio>
+<div id="music-btn" onclick="toggleMusic()">🎵</div>
+
+<div class="rain-container" id="rain"></div>
+
+<!-- Capa invisible para detectar clics -->
+<div id="click-area" onclick="nextSlide()"></div>
+
+<div id="container">
+
+  <!-- Intro -->
+  <div class="slide active">
+    <h1>5 cosas <br> que amo de ti <span class="heart-icon">❤️</span></h1>
+    <div class="hint">(Toca la pantalla)</div>
+  </div>
+
+  <!-- 1 -->
+  <div class="slide">
+    <h1>Tu carita <span class="heart-icon">❤️</span></h1>
+    <p>Amo tu cara, cada gesto, cada expresión que haces sin darte cuenta.</p>
+  </div>
+
+  <!-- 2 -->
+  <div class="slide">
+    <h1>Tu personalidad <span class="heart-icon">✨</span></h1>
+    <p>Amo tu manera de pensar, cómo ves el mundo. Tu corazón y lo buena que eres.</p>
+  </div>
+
+  <!-- 3 -->
+  <div class="slide">
+    <h1>Tus ojitos <span class="heart-icon">👀</span></h1>
+    <p>Porque dicen más de lo que a veces te atreves a decir con palabras.</p>
+  </div>
+
+  <!-- 4 -->
+  <div class="slide">
+    <h1>Tu pelo <span class="heart-icon">👩🏻</span></h1>
+    <p>La forma en que cae y cómo te queda sin que lo intentes.</p>
+  </div>
+  
+  <!-- 5 -->
+  <div class="slide">
+    <h1>Tu voz <span class="heart-icon">🎤</span></h1>
+    <p>Cuando hablas, cuando ríes y hasta cuando estás en silencio.</p>
+  </div>
+
+  <!-- Final -->
+  <div class="slide">
+    <h1 style="font-size: 2.5rem; margin-bottom: 15px;">Y todo esto... <span class="heart-icon">❤️</span></h1>
+    <div class="list-container">
+      <span class="list-item">Amo tu sonrisa, esa que aparece de repente.</span>
+      <span class="list-item">Amo tus manos, la manera en que te mueves.</span>
+      <span class="list-item">Amo tu forma de caminar, tu presencia.</span>
+      <span class="list-item">Amo tu risa, fuerte o bajita.</span>
+      <span class="list-item">Amo tu paciencia, tu apoyo y cómo me cuidas.</span>
+      <span class="list-item">Amo cómo me escuchas y me entiendes.</span>
+      <span class="list-item">Amo nuestros momentos, nuestras bromas y silencios.</span>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  let current = 0;
+  const slides = document.querySelectorAll('.slide');
+  const music = document.getElementById('bgMusic');
+
+  // Control de Música
+  function toggleMusic() {
+    if (music.paused) {
+      music.play();
+      document.getElementById('music-btn').textContent = '🔊';
+      // Iniciar lluvia fuerte al poner música
+      createRain(30); 
+    } else {
+      music.pause();
+      document.getElementById('music-btn').textContent = '🎵';
+    }
+  }
+
+  // Pasar diapositivas
+  function nextSlide() {
+    if (current >= slides.length - 1) return;
+    slides[current].classList.remove('active');
+    current++;
+    slides[current].classList.add('active');
+    
+    // Si no ha puesto música, intentamos reproducir suave (algunos navegadores dejan tras interacción)
+    if (music.paused && current === 1) {
+       music.play().then(()=>{
+          document.getElementById('music-btn').textContent = '🔊';
+       }).catch(()=>{});
+    }
+  }
+
+  // Lluvia de Emojis
+  function createRain(amount) {
+    const container = document.getElementById('rain');
+    const emojis = ['🌷', '🪷', '❤️', '✨', '🌷']; // Más flores como pediste
+    
+    for (let i = 0; i < amount; i++) {
+      const el = document.createElement('div');
+      el.classList.add('falling-item');
+      el.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+      el.style.left = Math.random() * 100 + 'vw';
+      el.style.animationDuration = (Math.random() * 3 + 4) + 's'; // Entre 4 y 7s
+      el.style.fontSize = (Math.random() * 20 + 15) + 'px';
+      el.style.animationDelay = Math.random() * 5 + 's';
+      container.appendChild(el);
+    }
+  }
+
+  // Iniciar lluvia suave al cargar
+  createRain(25);
+
+</script>
+
+</body>
+</html>
